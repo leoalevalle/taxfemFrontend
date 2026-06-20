@@ -1,69 +1,51 @@
-header.shadow-sm {
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  backdrop-filter: blur(10px);
-  background: rgba(1, 56, 140, 0.95);
+/* Contenedor principal del Header */
+.taxifem-header {
+  background-color: #fdfbfc; /* Un blanco/crema muy suave de fondo */
+  border-bottom: 1px solid #f0e6eb; /* Delicada línea de división inferior */
 }
 
-.navbar.bg-primary {
-  background: linear-gradient(135deg, #000000 0%, #0d6efd 100%) !important;
-  padding: 0.75rem 0;
+/* Estilos del Logo y la Marca */
+.brand-container {
+  color: #1a1a1a;
 }
 
-.navbar-brand {
-  font-size: 1.5rem;
-  letter-spacing: 1px;
-  transition: transform 0.3s ease;
-  display: inline-flex;
-  align-items: center;
+.brand-logo {
+  width: 42px;
+  height: 42px;
+  object-fit: cover;
+  border-radius: 50%; /* Lo hace perfectamente circular como en tu foto */
 }
 
-.navbar-brand:hover {
-  transform: translateY(-2px);
-  color: #ffd700 !important;
+.brand-name {
+  font-size: 1.4rem;
+  letter-spacing: -0.5px;
 }
 
-.navbar-brand i {
-  font-size: 1.8rem;
-  transition: transform 0.3s ease;
+/* El contenedor estilo pastilla (Pill) */
+.nav-pills-container {
+  background-color: #f5ecef; /* Fondo oscuro sutil para la barra contenedora */
+  padding: 6px;
+  border-radius: 30px; /* Bordes redondeados perfectos */
 }
 
-.navbar-brand:hover i {
-  transform: rotate(15deg);
-}
-
-.nav-link {
-  position: relative;
-  margin: 0 0.5rem;
-  font-weight: 500;
+/* Estilos para los enlaces dentro de la pastilla */
+.nav-pills .nav-link {
+  color: #7d6871; /* Color de texto apagado para los estados inactivos */
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 8px 20px;
+  border-radius: 25px;
   transition: all 0.3s ease;
 }
 
-.nav-link::after {
-  content: '';
-  position: absolute;
-  bottom: -5px;
-  left: 50%;
-  width: 0;
-  height: 3px;
-  background: #ffd700;
-  transition: all 0.3s ease;
-  transform: translateX(-50%);
-  border-radius: 2px;
+/* Efecto hover suave al pasar el mouse por encima */
+.nav-pills .nav-link:hover {
+  color: #b02a37; 
 }
 
-.nav-link:hover::after,
-.nav-link.active::after {
-  width: 80%;
-}
-
-.nav-link:hover {
-  transform: translateY(-2px);
-}
-
-.nav-link.active {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
+/* Clase activa de Angular: El botón seleccionado toma el color bordó/rojo */
+.nav-pills .nav-link.active {
+  background-color: #b02a37; /* El tono bordó elegante de tu diseño */
+  color: #ffffff !important;   /* Texto blanco */
+  box-shadow: 0 4px 10px rgba(176, 42, 55, 0.2); /* Sombra suave debajo del botón activo */
 }
