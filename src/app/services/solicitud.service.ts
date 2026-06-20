@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class SolicitudService {
-  private apiUrl = 'http://localhost:3000/api/solicitud';
+  private apiUrl = 'https://taxfembackend-3.onrender.com/api/solicitud';
 
   constructor(private http: HttpClient) {}
 
