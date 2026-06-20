@@ -1,0 +1,29 @@
+<header class="shadow-sm">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+      <a class="navbar-brand fw-bold" routerLink="/">
+        <img src="https://d585tldpucybw.cloudfront.net/sfimages/default-source/blogs/2024/2024-04/angular-logo.png?sfvrsn=543455a3_2" alt="Logo" width="30" height="30" class="d-inline-block align-text-top me-2">
+        <i class="bi bi-cpu-fill me-2"></i>TPwebservices
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Pasajera</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/conductora" routerLinkActive="active">Conductora</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/operadora" routerLinkActive="active">Operadora</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>

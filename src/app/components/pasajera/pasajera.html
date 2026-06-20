@@ -1,0 +1,76 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow">
+        <div class="card-header bg-purple text-white text-center" style="background-color: #6f42c1;">
+          <h4 class="mb-0">Portal de Pasajeras — Solicitar Traslado</h4>
+        </div>
+        <div class="card-body p-4">
+          
+          <div *ngIf="mensajeExito" class="alert alert-success" role="alert">
+            {{ mensajeExito }}
+          </div>
+          <div *ngIf="errorMsg" class="alert alert-danger" role="alert">
+            {{ errorMsg }}
+          </div>
+
+          <form (ngSubmit)="enviarSolicitud()" #solicitudForm="ngForm">
+            
+            <div class="mb-4 p-3 bg-light rounded border">
+              <label for="pasajeraSelect" class="form-label fw-bold text-secondary">
+                👤 Simular Pasajera Activa:
+              </label>
+              <select 
+                id="pasajeraSelect" 
+                [(ngModel)]="idPasajeraSeleccionada" 
+                name="idPasajeraSeleccionada" 
+                class="form-select">
+                <option *ngFor="let p of pasajerasDePrueba" [value]="p.id">
+                  {{ p.nombre }} (ID: {{ p.id }})
+                </option>
+              </select>
+              <small class="text-muted d-block mt-1">
+                Cambia la pasajera para simular solicitudes de usuarias distintas.
+              </small>
+            </div>
+
+            <div class="mb-3">
+              <label for="origenInput" class="form-label fw-bold">Punto de Origen (Recogida):</label>
+              <input 
+                type="text" 
+                id="origenInput" 
+                [(ngModel)]="origen" 
+                name="origen" 
+                class="form-control form-control-lg" 
+                placeholder="Ej: Av. Belgrano 1240" 
+                required />
+            </div>
+
+            <div class="mb-4">
+              <label for="destinoInput" class="form-label fw-bold">Punto de Destino (Inicio de Ruta):</label>
+              <input 
+                type="text" 
+                id="destinoInput" 
+                [(ngModel)]="inicio" 
+                name="inicio" 
+                class="form-control form-control-lg" 
+                placeholder="Ej: Terminal de Ómnibus" 
+                required />
+            </div>
+
+            <button 
+              type="submit" 
+              [disabled]="cargando" 
+              class="btn btn-lg w-100 text-white fw-bold" 
+              style="background-color: #6f42c1;">
+              <span *ngIf="!cargando">🚀 + registrarViaje()</span>
+              <span *ngIf="cargando">Procesando solicitud...</span>
+            </button>
+
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
