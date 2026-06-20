@@ -1,65 +1,126 @@
-<div class="container mt-4">
-  <div class="card shadow-sm border-success">
-    <div class="card-header bg-success text-white">
-      <h4 class="mb-0">📟 Panel de Conductoras — Hoja de Ruta & Notificaciones</h4>
-    </div>
-    
-    <div class="card-body p-4">
-      <div class="mb-4 p-3 bg-light rounded border border-success">
-        <label for="conductoraSelect" class="form-label fw-bold text-success">
-          🚗 Seleccionar Vehículo / Conductora Activa:
-        </label>
-        <select 
-          id="conductoraSelect" 
-          [(ngModel)]="idConductoraSeleccionada" 
-          (change)="cambiarConductora()"
-          name="idConductoraSeleccionada" 
-          class="form-select form-select-md">
-          <option *ngFor="let c of conductorasDePrueba" [value]="c.id">
-            {{ c.nombre }}
-          </option>
-        </select>
-        <small class="text-muted d-block mt-1">
-          Simula el teléfono celular de la conductora para recibir las alertas del viaje del CU-02.
-        </small>
-      </div>
+<div class="container mt-4 mb-5">
+  
+  <div class="mb-4 p-3 selector-conductora-card rounded shadow-sm">
+    <label for="conductoraSelect" class="form-label fw-bold text-muted mb-2">
+      🚗 Seleccionar Vehículo / Conductora Activa:
+    </label>
+    <select 
+      id="conductoraSelect" 
+      [(ngModel)]="idConductoraSeleccionada" 
+      (change)="cambiarConductora()"
+      name="idConductoraSeleccionada" 
+      class="form-select form-select-md border-0 bg-white shadow-sm">
+      <option *ngFor="let c of conductorasDePrueba" [value]="c.id">
+        {{ c.nombre }}
+      </option>
+    </select>
+  </div>
 
-      <div *ngIf="errorMsg" class="alert alert-danger" role="alert">
-        {{ errorMsg }}
-      </div>
+  <div *ngIf="errorMsg" class="alert alert-danger shadow-sm" role="alert">
+    {{ errorMsg }}
+  </div>
 
-      <h5 class="text-secondary mb-3">Viajes Asignados por Operadora (En Curso / Pendiente de Salida)</h5>
+  <div *ngIf="viajesAsignados.length === 0" class="empty-state-card text-center p-5 shadow-sm bg-white rounded">
+    <span class="fs-1 d-block mb-2">📭</span>
+    <p class="mb-0 text-muted fw-semibold">Sin viajes asignados en este momento.</p>
+    <small class="text-muted d-block mt-1">Estás marcada como <strong>Disponible</strong> en el sistema.</small>
+    <button (click)="cargarViajes()" class="btn btn-sm btn-outline-secondary mt-3 px-3 rounded-pill">
+      🔄 Actualizar Panel
+    </button>
+  </div>
+
+  <div class="row justify-content-center" *ngIf="viajesAsignados.length > 0">
+    <div class="col-12 col-md-8 col-lg-7" *ngFor="let viaje of viajesAsignados">
       
-      <div *ngIf="viajesAsignados.length === 0" class="alert alert-light border text-center p-4">
-        <span class="fs-1 d-block mb-2">📭</span>
-        <p class="mb-0 text-muted">Sin viajes asignados en este momento. Estás marcada como <strong>Disponible</strong>.</p>
-        <button (click)="cargarViajes()" class="btn btn-sm btn-outline-success mt-3">🔄 Actualizar Panel</button>
-      </div>
+      <div class="trip-main-container p-4 shadow-sm">
+        
+        <div class="alert-top-notification d-flex align-items-start p-3 mb-4">
+          <span class="me-2 mt-1">⚠️</span>
+          <div>
+            <h6 class="mb-1 fw-bold text-dark">Nueva asignación de viaje</h6>
+            <p class="mb-0 text-muted small">La operadora te ha asignado el siguiente viaje. Tienes que aceptar o rechazar.</p>
+          </div>
+        </div>
 
-      <div class="row">
-        <div class="col-md-12" *ngFor="let viaje of viajesAsignados">
-          <div class="card border-left-success shadow-sm mb-3 bg-light border-2 border-success">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center">
-                <h5 class="card-title text-success mb-1">🚨 ¡Nueva Asignación Recibida!</h5>
-                <span class="badge bg-warning text-dark text-uppercase">{{ viaje.estadoDeViaje }}</span>
+        <div class="trip-card-content bg-white p-4 shadow-sm mb-4">
+          
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <span class="trip-id fw-semibold text-muted">TF-00{{ viaje.idViaje }}</span>
+            <span class="badge-status px-3 py-1 rounded-pill small fw-semibold">
+              Pendiente tu respuesta
+            </span>
+          </div>
+
+          <div class="passenger-box d-flex align-items-center justify-content-between p-3 mb-4">
+            <div class="d-flex align-items-center">
+              <div class="avatar-circle d-flex align-items-center justify-content-center me-3">
+                <span class="text-danger">👤</span>
               </div>
-              <p class="card-text mt-2">
-                <strong>Pasajera:</strong> {{ viaje.solicitud?.pasajera?.nombre }} <br>
-                <strong>Teléfono de Contacto:</strong> {{ viaje.solicitud?.pasajera?.telefono }} <br>
-                <hr class="my-2">
-                <strong>📍 Punto de Recogida (Origen):</strong> {{ viaje.solicitud?.origen }} <br>
-                <strong>🏁 Destino Final (Inicio Ruta):</strong> {{ viaje.solicitud?.inicio }} <br>
+              <div>
+                <span class="text-muted small d-block">Pasajera</span>
+                <strong class="text-dark d-block">{{ viaje.solicitud?.pasajera?.nombre || 'Mariana Condori' }}</strong>
+              </div>
+            </div>
+            <button class="btn btn-call rounded-circle d-flex align-items-center justify-content-center">
+              📞
+            </button>
+          </div>
 
-              <div class="d-flex justify-content-between align-items-center mt-3">
-                <small class="text-muted">Despachado el: {{ viaje.horaInicio | date:'medium' }}</small>
-                <span class="text-muted fw-bold">Viaje ID: #{{ viaje.idViaje }}</span>
+          <div class="route-section mb-4">
+            <h6 class="route-title text-uppercase fw-bold text-muted small mb-3">Ruta del viaje</h6>
+            
+            <div class="position-relative ps-4">
+              <div class="route-line-connector"></div>
+              
+              <div class="route-point mb-4">
+                <div class="dot-indicator bg-success"></div>
+                <span class="text-muted small d-block">Origen</span>
+                <span class="text-dark fw-semibold">{{ viaje.solicitud?.origen }}</span>
+              </div>
+              
+              <div class="route-point">
+                <div class="dot-indicator bg-danger"></div>
+                <span class="text-muted small d-block">Destino</span>
+                <span class="text-dark fw-semibold">{{ viaje.solicitud?.inicio }}</span>
               </div>
             </div>
           </div>
+
+          <div class="row g-3 text-center mb-2">
+            <div class="col-6">
+              <div class="info-meta-box p-3 rounded">
+                <span class="d-block mb-1">🕒</span>
+                <span class="text-muted small d-block">Hora</span>
+                <strong class="text-dark fs-5">{{ viaje.horaInicio | date:'HH:mm' }}</strong>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="info-meta-box p-3 rounded">
+                <span class="d-block mb-1">📍</span>
+                <span class="text-muted small d-block">Fecha</span>
+                <strong class="text-dark fs-5">{{ viaje.fecha | date:'dd MMM yyyy' }}</strong>
+              </div>
+            </div>
+          </div>
+
         </div>
+
+        <div class="row g-3">
+          <div class="col-6">
+            <button class="btn btn-action-reject w-100 py-2.5 fw-semibold d-flex align-items-center justify-content-center gap-2">
+              ❌ Rechazar
+            </button>
+          </div>
+          <div class="col-6">
+            <button class="btn btn-action-accept w-100 py-2.5 fw-semibold d-flex align-items-center justify-content-center gap-2">
+              ✓ Aceptar viaje
+            </button>
+          </div>
+        </div>
+
       </div>
 
     </div>
   </div>
+
 </div>
