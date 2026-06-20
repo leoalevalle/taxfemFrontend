@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SolicitudService } from '../../services/solicitud.service';
@@ -29,7 +29,8 @@ export class Operadora implements OnInit {
   constructor(
     private solicitudService: SolicitudService,
     private conductoraService: ConductoraService,
-    private viajeService: ViajeService
+    private viajeService: ViajeService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -41,8 +42,12 @@ export class Operadora implements OnInit {
     this.solicitudService.getSolicitudesPendientes().subscribe({
       next: (res) => {
         this.solicitudesPendientes = res;
+        this.cdr.detectChanges();
       },
-      error: (err) => (this.errorMsg = 'Error al cargar solicitudes.')
+      error: (err) => { // 🛠️ CORREGIDO: Se envolvieron las acciones en llaves
+        this.errorMsg = 'Error al cargar solicitudes.';
+        this.cdr.detectChanges();
+      }
     });
   }
 
@@ -53,6 +58,7 @@ export class Operadora implements OnInit {
     this.conductoraSeleccionada = null;
     this.mostrarConfirmacion = false;
     this.mensajeExito = '';
+    this.cdr.detectChanges(); // Fuerza refresco al cambiar de seleccionada
   }
 
   // Paso 3, 4 y 5: Buscar y mostrar conductoras disponibles
@@ -62,24 +68,31 @@ export class Operadora implements OnInit {
       next: (res) => {
         if (res.data && res.data.length > 0) {
           this.conductorasDisponibles = res.data;
+          this.cdr.detectChanges();
         } else {
           // Flujo Alternativo (4): No hay conductoras disponibles
           this.errorMsg = 'Flujo Alternativo: No hay conductoras disponibles en este momento.';
+          this.cdr.detectChanges();
         }
       },
-      error: (err) => (this.errorMsg = 'Error al consultar disponibilidad.')
+      error: (err) => { // CORREGIDO: Se envolvieron las acciones en llaves
+        this.errorMsg = 'Error al consultar disponibilidad.';
+        this.cdr.detectChanges();
+      }
     });
   }
 
   // Paso 6: Seleccionar la conductora a asignar
   seleccionarConductora(conductora: any) {
     this.conductoraSeleccionada = conductora;
+    this.cdr.detectChanges();
   }
 
   // Paso 7: Solicita confirmación de la asignación de viaje
   pedirConfirmacion() {
     if (this.solicitudSeleccionada && this.conductoraSeleccionada) {
       this.mostrarConfirmacion = true;
+      this.cdr.detectChanges();
     }
   }
 
@@ -87,6 +100,7 @@ export class Operadora implements OnInit {
   cancelarAsignacion() {
     this.mostrarConfirmacion = false;
     this.conductoraSeleccionada = null;
+    this.cdr.detectChanges();
   }
 
   // Paso 8 a 13: Ingresa confirmación, registra actualización y emite alertas con notificaciones
@@ -111,10 +125,12 @@ export class Operadora implements OnInit {
         this.conductorasDisponibles = [];
         this.mostrarConfirmacion = false;
         this.cargarSolicitudes();
+        this.cdr.detectChanges();
       },
       error: (err) => {
         this.errorMsg = err.error?.msg || 'Error crítico en la asignación.';
         this.mostrarConfirmacion = false;
+        this.cdr.detectChanges();
       }
     });
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SolicitudService } from '../../services/solicitud.service';
@@ -26,7 +26,10 @@ export class Pasajera implements OnInit {
   errorMsg: string = '';
   cargando: boolean = false;
 
-  constructor(private solicitudService: SolicitudService) {}
+  constructor(
+    private solicitudService: SolicitudService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {}
 
@@ -42,6 +45,7 @@ export class Pasajera implements OnInit {
     }
 
     this.cargando = true;
+    this.cdr.detectChanges(); // Fuerza el refresco para mostrar el estado "cargando" (ej. deshabilitar botón)
 
     const nuevaSolicitud = {
       pasajeraId: Number(this.idPasajeraSeleccionada),
@@ -56,10 +60,12 @@ export class Pasajera implements OnInit {
         this.origen = '';
         this.inicio = '';
         this.cargando = false;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         this.errorMsg = err.error?.msg || 'Ocurrió un error al registrar el viaje.';
         this.cargando = false;
+        this.cdr.detectChanges();
       }
     });
   }

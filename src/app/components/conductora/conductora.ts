@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ConductoraService } from '../../services/conductora.service';
@@ -21,7 +21,9 @@ export class Conductora implements OnInit {
   viajesAsignados: any[] = [];
   errorMsg: string = '';
 
-  constructor(private conductoraService: ConductoraService) {}
+  constructor(private conductoraService: ConductoraService,
+              private cdr: ChangeDetectorRef
+              ) {}
 
   ngOnInit(): void {
     this.cargarViajes();
@@ -34,9 +36,11 @@ export class Conductora implements OnInit {
     this.conductoraService.getViajesAsignados(Number(this.idConductoraSeleccionada)).subscribe({
       next: (res) => {
         this.viajesAsignados = res;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         this.errorMsg = 'No se pudieron recuperar las notificaciones de viaje.';
+        this.cdr.detectChanges();
       }
     });
   }
