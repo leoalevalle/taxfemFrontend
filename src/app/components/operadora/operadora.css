@@ -1,0 +1,51 @@
+/* --- TRUCO PARA ELIMINAR LOS MÁRGENES BLANCOS LATERALES --- */
+.full-width-fix {
+  width: 100vw !important;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw !important;
+  margin-right: -50vw !important;
+  padding-left: 2rem !important;
+  padding-right: 2rem !important;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+/* --- Navegación --- */
+.sub-nav .sub-nav-link {
+  color: #000000 !important;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s ease;
+}
+.sub-nav .sub-nav-link:hover {
+  color: #dc3545 !important;
+}
+.sub-nav .sub-nav-link.active {
+  border-bottom: 3px solid #dc3545 !important;
+  font-weight: bold;
+}
+
+/* --- Tarjetas Interactivas con Borde Rojo --- */
+.card-interactiva {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 100% !important;
+}
+.card-interactiva:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+}
+
+.active-card-rosa {
+  border: 2px solid #dc3545 !important;
+  background-color: #fcedf1 !important;
+}
+
+/* Scrollbars */
+.scrollable-container::-webkit-scrollbar {
+  width: 5px;
+}
+.scrollable-container::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
