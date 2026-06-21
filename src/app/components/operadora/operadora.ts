@@ -23,6 +23,8 @@ export class Operadora implements OnInit {
   mensajeExito: string = '';
   errorMsg: string = '';
 
+  pestanaActiva: string = 'solicitudes'; // Inicia mostrando la pestaña Solicitudes por defecto
+
   // Simulamos que la operadora logueada tiene el ID 1 (Precondición: CU-01)
   idOperadoraLogueada: number = 1;
 
