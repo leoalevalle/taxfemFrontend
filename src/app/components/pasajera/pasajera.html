@@ -1,76 +1,110 @@
-<div class="container mt-4">
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <div class="card shadow">
-        <div class="card-header bg-purple text-white text-center" style="background-color: #6f42c1;">
-          <h4 class="mb-0">Portal de Pasajeras — Solicitar Traslado</h4>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaxiFem - Solicitar Viaje</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="app">
+
+    <!-- Header -->
+    <header class="header">
+        <div class="logo-container">
+            <div class="logo">🌸</div>
+            <h2>TaxiFem</h2>
         </div>
-        <div class="card-body p-4">
-          
-          <div *ngIf="mensajeExito" class="alert alert-success" role="alert">
-            {{ mensajeExito }}
-          </div>
-          <div *ngIf="errorMsg" class="alert alert-danger" role="alert">
-            {{ errorMsg }}
-          </div>
 
-          <form (ngSubmit)="enviarSolicitud()" #solicitudForm="ngForm">
-            
-            <div class="mb-4 p-3 bg-light rounded border">
-              <label for="pasajeraSelect" class="form-label fw-bold text-secondary">
-                👤 Simular Pasajera Activa:
-              </label>
-              <select 
-                id="pasajeraSelect" 
-                [(ngModel)]="idPasajeraSeleccionada" 
-                name="idPasajeraSeleccionada" 
-                class="form-select">
-                <option *ngFor="let p of pasajerasDePrueba" [value]="p.id">
-                  {{ p.nombre }} (ID: {{ p.id }})
-                </option>
-              </select>
-              <small class="text-muted d-block mt-1">
-                Cambia la pasajera para simular solicitudes de usuarias distintas.
-              </small>
-            </div>
-
-            <div class="mb-3">
-              <label for="origenInput" class="form-label fw-bold">Punto de Origen (Recogida):</label>
-              <input 
-                type="text" 
-                id="origenInput" 
-                [(ngModel)]="origen" 
-                name="origen" 
-                class="form-control form-control-lg" 
-                placeholder="Ej: Av. Belgrano 1240" 
-                required />
-            </div>
-
-            <div class="mb-4">
-              <label for="destinoInput" class="form-label fw-bold">Punto de Destino (Inicio de Ruta):</label>
-              <input 
-                type="text" 
-                id="destinoInput" 
-                [(ngModel)]="inicio" 
-                name="inicio" 
-                class="form-control form-control-lg" 
-                placeholder="Ej: Terminal de Ómnibus" 
-                required />
-            </div>
-
-            <button 
-              type="submit" 
-              [disabled]="cargando" 
-              class="btn btn-lg w-100 text-white fw-bold" 
-              style="background-color: #6f42c1;">
-              <span *ngIf="!cargando">🚀 + registrarViaje()</span>
-              <span *ngIf="cargando">Procesando solicitud...</span>
-            </button>
-
-          </form>
-
+        <div class="roles">
+            <button>Operadora</button>
+            <button class="active">Pasajera</button>
+            <button>Conductora</button>
         </div>
-      </div>
-    </div>
-  </div>
+    </header>
+
+    <!-- Navegación -->
+    <nav class="tabs">
+        <button class="tab active">➕ Solicitar viaje</button>
+        <button class="tab">🚕 Mi viaje</button>
+    </nav>
+
+    <!-- Contenido -->
+    <main class="content">
+
+        <h1>Solicitar viaje</h1>
+        <p class="subtitle">
+            Completa el formulario para tu próximo viaje
+        </p>
+
+        <!-- Ruta -->
+        <section>
+            <h3>RUTA</h3>
+
+            <label>Punto de origen *</label>
+            <div class="input-icon">
+                <span>🟢</span>
+                <input type="text"
+                       placeholder="Ej. Plaza Belgrano, Barrio Gorriti...">
+            </div>
+
+            <label>Destino *</label>
+            <div class="input-icon">
+                <span>📍</span>
+                <input type="text"
+                       placeholder="Ej. Hospital Pablo Soria, Alto Comedero...">
+            </div>
+
+            <div class="trip-card">
+                <div class="trip-title">
+                    ⚡ Viaje inmediato
+                </div>
+                <p>Solo se pueden solicitar viajes para ahora mismo</p>
+            </div>
+        </section>
+
+        <!-- Preferencias -->
+        <section>
+            <h3>PREFERENCIAS</h3>
+
+            <div class="row">
+
+                <div class="field">
+                    <label>👥 Pasajeros</label>
+                    <select>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>🚖 Tipo de servicio</label>
+                    <select>
+                        <option>estándar</option>
+                        <option>premium</option>
+                        <option>adaptado</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <label>Notas adicionales (opcional)</label>
+            <textarea
+                placeholder="Ej. Frente al kiosco de la esquina, portón verde, accesibilidad...">
+            </textarea>
+
+        </section>
+
+        <button class="continue-btn">
+            Continuar →
+        </button>
+
+    </main>
+
 </div>
+
+</body>
+</html>
