@@ -6,7 +6,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ConductoraService {
-  private apiUrl = 'https://taxfembackend-3.onrender.com/api/conductora';
+  private apiUrl = 'http://localhost:3000/api/conductora'
+  //'https://taxfembackend-3.onrender.com/api/conductora';
 
   constructor(private http: HttpClient) {}
 

@@ -15,7 +15,9 @@ export class Conductora implements OnInit {
   idConductoraSeleccionada: number = 4; // Por defecto Elena Gómez
   conductorasDePrueba = [
     { id: 4, nombre: 'Elena Gómez (Matrícula: 45502)' },
-    { id: 5, nombre: 'Valeria Cruz (Matrícula: 61129)' }
+    { id: 5, nombre: 'Valeria Cruz (Matrícula: 61129)' },
+    { id: 6, nombre: 'Tatiana Gonzales (Matrícula: 45511)' },
+    { id: 7, nombre: 'Patricia Cruz (Matrícula: 61100)' },
   ];
 
   // Datos
@@ -76,6 +78,32 @@ export class Conductora implements OnInit {
       },
       error: (err) => {
         this.errorMsg = 'Error al procesar la aceptación del viaje.';
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  finalizar(idViaje: number) {
+    this.errorMsg = '';
+    this.viajeService.finalizarViaje(idViaje).subscribe({
+      next: (res) => {
+        this.cargarViajes(); // Refresca la lista y quita el viaje de la pantalla
+      },
+      error: (err) => {
+        this.errorMsg = 'Error al finalizar el viaje.';
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  cancelar(idViaje: number) {
+    this.errorMsg = '';
+    this.viajeService.cancelarViaje(idViaje).subscribe({
+      next: (res) => {
+        this.cargarViajes(); // Refresca la lista y quita el viaje de la pantalla
+      },
+      error: (err) => {
+        this.errorMsg = 'Error al cancelar el viaje.';
         this.cdr.detectChanges();
       }
     });

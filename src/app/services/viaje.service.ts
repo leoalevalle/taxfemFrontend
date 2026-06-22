@@ -14,7 +14,8 @@ export interface AsignacionViajeInput {
   providedIn: 'root',
 })
 export class ViajeService {
-  private apiUrl = 'https://taxfembackend-3.onrender.com/api/viaje';
+  private apiUrl = 'http://localhost:3000/api/viaje'
+  //'https://taxfembackend-3.onrender.com/api/viaje';
 
   constructor(private http: HttpClient) {}
 
@@ -31,5 +32,19 @@ export class ViajeService {
   // Acción de Conductora - Rechazar Asignación
   rechazarViaje(idViaje: number): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/rechazar/${idViaje}`, {});
+  }
+
+  getViajesActivos(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}`);
+  }
+
+  // Acción de Conductora - Finalizar Viaje
+  finalizarViaje(idViaje: number): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/finalizar/${idViaje}`, {});
+  }
+
+  // Acción de Conductora - Cancelar Viaje en Curso
+  cancelarViaje(idViaje: number): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/cancelar/${idViaje}`, {});
   }
 }

@@ -1,110 +1,147 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TaxiFem - Solicitar Viaje</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-
-<div class="app">
-
-    <!-- Header -->
-    <header class="header">
-        <div class="logo-container">
-            <div class="logo">🌸</div>
-            <h2>TaxiFem</h2>
-        </div>
-
-        <div class="roles">
-            <button>Operadora</button>
-            <button class="active">Pasajera</button>
-            <button>Conductora</button>
-        </div>
-    </header>
-
-    <!-- Navegación -->
-    <nav class="tabs">
-        <button class="tab active">➕ Solicitar viaje</button>
-        <button class="tab">🚕 Mi viaje</button>
-    </nav>
-
-    <!-- Contenido -->
-    <main class="content">
-
-        <h1>Solicitar viaje</h1>
-        <p class="subtitle">
-            Completa el formulario para tu próximo viaje
-        </p>
-
-        <!-- Ruta -->
-        <section>
-            <h3>RUTA</h3>
-
-            <label>Punto de origen *</label>
-            <div class="input-icon">
-                <span>🟢</span>
-                <input type="text"
-                       placeholder="Ej. Plaza Belgrano, Barrio Gorriti...">
-            </div>
-
-            <label>Destino *</label>
-            <div class="input-icon">
-                <span>📍</span>
-                <input type="text"
-                       placeholder="Ej. Hospital Pablo Soria, Alto Comedero...">
-            </div>
-
-            <div class="trip-card">
-                <div class="trip-title">
-                    ⚡ Viaje inmediato
-                </div>
-                <p>Solo se pueden solicitar viajes para ahora mismo</p>
-            </div>
-        </section>
-
-        <!-- Preferencias -->
-        <section>
-            <h3>PREFERENCIAS</h3>
-
-            <div class="row">
-
-                <div class="field">
-                    <label>👥 Pasajeros</label>
-                    <select>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                    </select>
-                </div>
-
-                <div class="field">
-                    <label>🚖 Tipo de servicio</label>
-                    <select>
-                        <option>estándar</option>
-                        <option>premium</option>
-                        <option>adaptado</option>
-                    </select>
-                </div>
-
-            </div>
-
-            <label>Notas adicionales (opcional)</label>
-            <textarea
-                placeholder="Ej. Frente al kiosco de la esquina, portón verde, accesibilidad...">
-            </textarea>
-
-        </section>
-
-        <button class="continue-btn">
-            Continuar →
-        </button>
-
-    </main>
-
+<div class="session-simulator">
+  <span class="session-label">👤 Pasajera Activa:</span>
+  <select [(ngModel)]="idPasajeraSeleccionada" (change)="consultarEstadoViaje()" class="session-select">
+    <option *ngFor="let p of pasajerasDePrueba" [value]="p.id">{{ p.nombre }}</option>
+  </select>
 </div>
 
-</body>
-</html>
+<nav class="tabs">
+  <button class="tab" [class.active]="pestanaActiva === 'solicitar'" (click)="pestanaActiva = 'solicitar'">
+    ➕ Solicitar viaje
+  </button>
+  <button class="tab" [class.active]="pestanaActiva === 'miviaje'" (click)="pestanaActiva = 'miviaje'; consultarEstadoViaje()">
+    🚕 Mi viaje
+  </button>
+</nav>
+
+<div *ngIf="errorMsg" class="alert-msg error">
+  {{ errorMsg }}
+</div>
+<div *ngIf="mensajeExito" class="alert-msg success">
+  {{ mensajeExito }}
+</div>
+
+<main class="content">
+
+  <div *ngIf="pestanaActiva === 'solicitar'">
+    <h1>Solicitar viaje</h1>
+    <p class="subtitle">
+      Completa el formulario para tu próximo viaje
+    </p>
+
+    <section>
+      <h3>RUTA</h3>
+
+      <label>Punto de origen *</label>
+      <div class="input-icon">
+        <span>🟢</span>
+        <input type="text" [(ngModel)]="origen" placeholder="Ej. Plaza Belgrano, Barrio Gorriti...">
+      </div>
+
+      <label>Destino *</label>
+      <div class="input-icon">
+        <span>📍</span>
+        <input type="text" [(ngModel)]="inicio" placeholder="Ej. Hospital Pablo Soria, Alto Comedero...">
+      </div>
+
+      <div class="trip-card">
+        <div class="trip-title">
+          ⚡ Viaje inmediato
+        </div>
+        <p>Solo se pueden solicitar viajes para ahora mismo</p>
+      </div>
+    </section>
+
+    <section>
+      <h3>PREFERENCIAS</h3>
+
+      <div class="row">
+        <div class="field">
+          <label>👥 Pasajeros</label>
+          <select>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>🚖 Tipo de servicio</label>
+          <select>
+            <option>estándar</option>
+            <option>premium</option>
+            <option>adaptado</option>
+          </select>
+        </div>
+      </div>
+
+      <label>Notas adicionales (opcional)</label>
+      <textarea placeholder="Ej. Frente al kiosco de la esquina, portón verde, accesibilidad..."></textarea>
+    </section>
+
+    <button class="continue-btn" [disabled]="cargando" (click)="enviarSolicitud()">
+      {{ cargando ? 'Procesando...' : 'Continuar →' }}
+    </button>
+  </div>
+
+  <div *ngIf="pestanaActiva === 'miviaje'">
+    
+    <div *ngIf="!viajeActual || viajeActual.estadoDeViaje === 'pendiente'" class="searching-container">
+      <span class="searching-icon">🕒</span>
+      <h2 class="searching-title">Buscando conductora...</h2>
+      <p class="searching-text">Tu solicitud fue recibida. Te notificaremos los datos del vehículo en la brevedad.</p>
+      <button (click)="consultarEstadoViaje()" class="tab">🔄 Actualizar Estado</button>
+    </div>
+
+    <div *ngIf="viajeActual && viajeActual.estadoDeViaje === 'encurso'">
+      
+      <div class="eta-box">
+        <span class="eta-title">🕒 TIEMPO ESTIMADO DE LLEGADA</span>
+        <div class="eta-number">8</div>
+        <span class="eta-unit">minutos</span>
+      </div>
+
+      <div class="driver-card">
+        <div class="driver-info-row">
+          <div class="driver-profile">
+            <div class="driver-avatar">🚗</div>
+            <div>
+              <strong class="driver-name">{{ viajeActual.conductora?.nombre || 'Carmen Quispe' }}</strong>
+              <span class="driver-vehicle">{{ viajeActual.conductora?.vehiculo || 'Toyota Etios 2023' }}</span>
+            </div>
+          </div>
+          <div class="driver-rating">
+            <span class="rating-title">Calificación</span>
+            <strong class="rating-number">4.9 ★</strong>
+          </div>
+        </div>
+
+        <div class="license-plate-container">
+          <span class="license-title">Matrícula del vehículo</span>
+          <div class="license-number">{{ viajeActual.conductora?.matricula || 'JUJ-123' }}</div>
+        </div>
+      </div>
+
+      <div class="route-details-box">
+        <h3>RUTA</h3>
+        <div class="route-timeline">
+          <div class="route-point">
+            <span class="point-badge origin">🟢 Origen</span>
+            <p class="point-text">{{ viajeActual.origen }}</p>
+          </div>
+          <div class="route-point">
+            <span class="point-badge destination">📍 Destino</span>
+            <p class="point-text">{{ viajeActual.inicio }}</p>
+          </div>
+        </div>
+      </div>
+
+      <button class="cancel-trip-btn" (click)="cancelarViajeClick()">
+        ¿Desea cancelar su viaje?
+      </button>
+
+    </div>
+  </div>
+
+</main>

@@ -122,12 +122,12 @@
 
         <div class="row g-2" *ngIf="viaje.estadoDeViaje === 'encurso'">
           <div class="col-4">
-            <button class="btn btn-outline-danger w-100 py-2.5 fw-semibold small-text" style="font-size: 0.85rem;">
+            <button (click)="cancelar(viaje.idViaje)" class="btn btn-outline-danger w-100 py-2.5 fw-semibold small-text" style="font-size: 0.85rem;">
               🛑 Cancelar
             </button>
           </div>
           <div class="col-4">
-            <button class="btn btn-success w-100 py-2.5 fw-semibold text-white small-text" style="font-size: 0.85rem;">
+            <button (click)="finalizar(viaje.idViaje)" class="btn btn-success w-100 py-2.5 fw-semibold text-white small-text" style="font-size: 0.85rem;">
               🏁 Finalizar
             </button>
           </div>
