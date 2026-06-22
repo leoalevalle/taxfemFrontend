@@ -14,8 +14,9 @@ export interface AsignacionViajeInput {
   providedIn: 'root',
 })
 export class ViajeService {
-  private apiUrl = 'http://localhost:3000/api/viaje'
-  //'https://taxfembackend-3.onrender.com/api/viaje';
+  private apiUrl = 'https://taxfembackend-3.onrender.com/api/viaje';
+                  //'http://localhost:3000/api/viaje'
+  
 
   constructor(private http: HttpClient) {}
 
