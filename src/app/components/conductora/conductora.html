@@ -34,7 +34,7 @@
       
       <div class="trip-main-container p-4 shadow-sm">
         
-        <div class="alert-top-notification d-flex align-items-start p-3 mb-4">
+        <div *ngIf="viaje.estadoDeViaje === 'pendiente'" class="alert-top-notification d-flex align-items-start p-3 mb-4">
           <span class="me-2 mt-1">⚠️</span>
           <div>
             <h6 class="mb-1 fw-bold text-dark">Nueva asignación de viaje</h6>
@@ -46,8 +46,10 @@
           
           <div class="d-flex justify-content-between align-items-center mb-4">
             <span class="trip-id fw-semibold text-muted">TF-00{{ viaje.idViaje }}</span>
-            <span class="badge-status px-3 py-1 rounded-pill small fw-semibold">
-              Pendiente tu respuesta
+            
+            <span class="badge-status px-3 py-1 rounded-pill small fw-semibold"
+                  [ngClass]="viaje.estadoDeViaje === 'encurso' ? 'bg-success text-white' : ''">
+              {{ viaje.estadoDeViaje === 'encurso' ? 'En curso' : 'Pendiente tu respuesta' }}
             </span>
           </div>
 
@@ -105,15 +107,33 @@
 
         </div>
 
-        <div class="row g-3">
+        <div class="row g-3" *ngIf="viaje.estadoDeViaje === 'pendiente'">
           <div class="col-6">
-            <button class="btn btn-action-reject w-100 py-2.5 fw-semibold d-flex align-items-center justify-content-center gap-2">
+            <button (click)="rechazar(viaje.idViaje)" class="btn btn-action-reject w-100 py-2.5 fw-semibold d-flex align-items-center justify-content-center gap-2">
               ❌ Rechazar
             </button>
           </div>
           <div class="col-6">
-            <button class="btn btn-action-accept w-100 py-2.5 fw-semibold d-flex align-items-center justify-content-center gap-2">
+            <button (click)="aceptar(viaje.idViaje)" class="btn btn-action-accept w-100 py-2.5 fw-semibold d-flex align-items-center justify-content-center gap-2">
               ✓ Aceptar viaje
+            </button>
+          </div>
+        </div>
+
+        <div class="row g-2" *ngIf="viaje.estadoDeViaje === 'encurso'">
+          <div class="col-4">
+            <button class="btn btn-outline-danger w-100 py-2.5 fw-semibold small-text" style="font-size: 0.85rem;">
+              🛑 Cancelar
+            </button>
+          </div>
+          <div class="col-4">
+            <button class="btn btn-success w-100 py-2.5 fw-semibold text-white small-text" style="font-size: 0.85rem;">
+              🏁 Finalizar
+            </button>
+          </div>
+          <div class="col-4">
+            <button class="btn btn-warning w-100 py-2.5 fw-semibold text-dark small-text" style="font-size: 0.85rem;">
+              ⚠️ Reportar
             </button>
           </div>
         </div>

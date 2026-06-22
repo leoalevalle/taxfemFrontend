@@ -22,4 +22,14 @@ export class ViajeService {
   asignarViaje(datosAsignacion: AsignacionViajeInput): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/asignar`, datosAsignacion);
   }
+
+  // Acción de Conductora - Aceptar Asignación
+  aceptarViaje(idViaje: number): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/aceptar/${idViaje}`, {});
+  }
+
+  // Acción de Conductora - Rechazar Asignación
+  rechazarViaje(idViaje: number): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/rechazar/${idViaje}`, {});
+  }
 }

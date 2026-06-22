@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ConductoraService } from '../../services/conductora.service';
+import { ViajeService } from '../../services/viaje.service';
 
 @Component({
   selector: 'app-conductora',
@@ -22,6 +23,7 @@ export class Conductora implements OnInit {
   errorMsg: string = '';
 
   constructor(private conductoraService: ConductoraService,
+              private viajeService: ViajeService,
               private cdr: ChangeDetectorRef
               ) {}
 
@@ -49,5 +51,33 @@ export class Conductora implements OnInit {
   cambiarConductora() {
     this.viajesAsignados = [];
     this.cargarViajes();
+  }
+
+  rechazar(idViaje: number) {
+    this.errorMsg = '';
+    this.viajeService.rechazarViaje(idViaje).subscribe({
+      next: (res) => {
+        // Al rechazar, el viaje desaparece de su panel. Recargamos la lista.
+        this.cargarViajes();
+      },
+      error: (err) => {
+        this.errorMsg = 'Error al procesar el rechazo del viaje.';
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  aceptar(idViaje: number) {
+    this.errorMsg = '';
+    this.viajeService.aceptarViaje(idViaje).subscribe({
+      next: (res) => {
+        // El viaje pasa a estar 'encurso'. Volvemos a cargar para refrescar la vista/badges.
+        this.cargarViajes();
+      },
+      error: (err) => {
+        this.errorMsg = 'Error al procesar la aceptación del viaje.';
+        this.cdr.detectChanges();
+      }
+    });
   }
 }
